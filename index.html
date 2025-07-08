@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7LXHS2PFB5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7LXHS2PFB5');
+  </script>
+  <script type="text/javascript" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="DDIS: Diffusion-assisted Data-free Image Synthesis">
+  <meta name="keywords" content="Zero-Shot, Optimal Transprot">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> DDIS: Diffusion-assisted Data-free Image Synthesis</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./fig/otseg2.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  
+</head>
+<body>
+<head>
+    <meta charset="UTF-8">
+    <title>텍스트 크기 테스트</title>
+    <style>
+        .large-text {
+        font-size: 1.2em;
+        color: #333;
+        }
+    </style>
+    <style>
+      /* Citation 영역의 pre 태그 스타일 재정의 */
+      .citation pre {
+        margin: 0;
+        padding: 10px;
+        background-color: #f9f9f9;
+        white-space: pre-wrap; /* 긴 줄이 자동 줄바꿈 */
+        border-left: 3px solid #f44336;
+        font-family: Consolas, monospace;
+      }
+      /* footer 및 Citation 영역의 정렬 맞춤 */
+      footer, .citation {
+        text-align: left;
+        margin: 20px 0;
+      }
+      /* 이미지 크기 조절 */
+      .figure0 {
+        max-width: 1000px;
+        width: 120%;
+        height: auto;
+        display: block;
+        margin: 10px auto;
+      }
+      .figure2 {
+        max-width: 500px;
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 10px auto;
+      }
+    </style>
+  </head>
+</head>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <!-- <div class="navbar-menu"> -->
+    <!-- <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://sites.google.com/view/kwanyoung-kim/?pli=1">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a> -->
+
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/cubeyoung/TA-VAAL">
+            TA-VAAL (CVPR 2021)
+          </a>          
+          <a class="navbar-item" href="https://arxiv.org/pdf/2106.07009.pdf">
+            Noise2Score (NeurIPS 2021)
+          </a>
+          <a class="navbar-item" href="https://arxiv.org/abs/2112.03696">
+            NoiseAdap2Score (CVPR 2022)
+          </a>          
+          <a class="navbar-item" href="https://arxiv.org/abs/2104.05892">
+            AdaINSeg (ECCV 2022)
+          </a>          
+          <a class="navbar-item" href="https://arxiv.org/pdf/2209.14566.pdf">
+            DARL (ICLR 2023)
+          </a>
+        </div> -->
+      <!-- </div>
+    </div> -->
+<!-- 
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            When Model Knowledge meets Diffusion Model: Diffusion-assisted Data-free Image Synthesis with Alignment of Domain and Class
+          </h1>
+          <div class="is-size-4 publication-authors">
+            <span class="author-block">
+              <a href="https://github.com/lakeeye1220?tab=repositories" target="_blank">Yujin Kim</a><sup>*1,2</sup>,</span>
+            <span class="author-block">
+              <a href="https://github.com/gustn9609" target="_blank">Hyunsoo Kim</a><sup>*1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.hyunwoojkim.com/people" target="_blank">Hyunwoo J. Kim</a><sup>3</sup>,</span>
+            <span class="author-block">
+              <a href="https://ce.khu.ac.kr/ce/user/bbs/BMSR00047/view.do" target="_blank">Suhyun Kim</a><sup>4</sup></span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Korea University</span>
+            <span class="author-block"><sup>2</sup>Korea Institute of Science and Technology</span><br>
+            <span class="author-block"><sup>3</sup>KAIST</span>
+            <span class="author-block"><sup>4</sup>Kyung Hee University</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>*</sup>Equal Contribution</span>
+          </div>
+
+          <div class="is-size-4"><b> ICML 2025 </b></div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2506.15381"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link -->
+              <span class="link-block">
+                <a href="https://github.com/cubeyoung/PLADIS"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!--/ main Figure. -->    
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+            <p class="large-text">
+              Open-source pre-trained models hold great potential for diverse applications, but their utility declines when their training data is unavailable.
+              Data-Free Image Synthesis (DFIS) aims to generate images that approximate the learned data distribution of a pre-trained model without accessing the original data.
+              However, existing DFIS methods produce samples that deviate from the training data distribution due to the lack of prior knowledge about natural images.
+              To overcome this limitation, we propose <strong><em><span style="color:#11ea15;font-weight:bold;">DDIS</span></em></strong>, the first <strong><em><span style="color:#11ea15;font-weight:bold;">Diffusion-assisted Data-free Image Synthesis</span></em></strong> method that leverages a text-to-image diffusion model as a powerful image prior, improving synthetic image quality.
+              DDIS extracts knowledge about the learned distribution from the given model and uses it to guide the diffusion model, enabling the generation of images that accurately align with the training data distribution.
+              To achieve this, we introduce Domain Alignment Guidance (DAG) that aligns the synthetic data domain with the training data domain during the diffusion sampling process.
+              Furthermore, we optimize a single Class Alignment Token (CAT) embedding to effectively capture class-specific attributes in the training dataset. Experiments on PACS and ImageNet demonstrate that DDIS outperforms prior DFIS methods by generating samples that better reflect the training data distribution, achieving SOTA performance in data-free applications.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+<style>
+  /* 이미지 크기 조절 */
+  .figure0 {
+    max-width: 1000px; /* 원하는 크기로 조절 */
+    width: 120%;
+    height: auto;
+    display: block;
+    margin: 10px auto; /* 중앙 정렬 및 위/아래 여백 */
+  }
+</style>
+
+<section class="section">
+  <div class="container is-max-desktop">
+  <div class="columns is-centered">
+      <!-- PLADIS 작동 원리에 대한 설명 -->
+      <div class="column">
+      <div class="content">
+          <h2 class="title is-3">Overview of DDIS</h2>
+          <p class="large-text">
+            We propose an <em><strong>D</strong>iffusion-assisted <strong>D</strong>ata-free <strong>I</strong>mage <strong>S</strong>ynthesis</em> (DDIS), which guides the T2I diffusion model to generate images that are closely aligned with the training-set distribution. Our approach tackles the misalignment problem that arises when directly substituting the training set with images synthesized by a T2I diffusion model.
+          <img src="./ddis_main.png" vspace = 10 
+          class="figure1"
+          alt="figure1_image."/>
+          <p class="large-text">
+            The goal of DDIS is to generate images approximating the training set distribution learned by 
+            \( f^*_\theta \) using a Text-to-Image diffusion model. 
+            Firstly, we construct prompts \( \mathbf{y} \) with <strong><em>Class Alignment Token</em> (CAT)</strong> and the class label \( c \) provided with the model. 
+            Secondly, we provide domain guidance to noise latent \( z_t \) at each time step \( t \) via <strong><em>Domain Alignment Guidance</em> (DAG)</strong>  , 
+            aligning image features with the BN layer statistics within a model \( f^*_\theta \). Lastly, we forward the final image \( \hat{x}_0 \) from the guided image latent \( \tilde{z}_0 \) to the \( f^*_\theta \) and optimize the CAT embedding 
+            using Cross-Entropy loss to encode features specific to the target class. 
+            (As in the figure above, we can successfully synthesize the “tiger cat” class in the “art” domain via DDIS.)
+          </p>
+      </div>
+      </div>
+      <!--/ PLADIS 설명 -->
+  </div>
+  </div>
+  </section>
+  <style>
+      /* 이미지 크기 조절 */
+      .figure2 {
+        max-width: 500px; /* 원하는 크기로 조절 */
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 10px auto; /* 중앙 정렬 및 위/아래 여백 */
+      }
+    </style>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <!-- Effectiveness of ZegOT. -->
+      <div class="column">
+
+      </div>
+      <!--/ Effectiveness of ZegOT. -->
+    </div>
+  </div>
+</section>
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Qualitative Result of DDIS</title>
+  <!-- Bulma CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    /* 공통 슬라이더 스타일 */
+    .slider {
+      position: relative;
+      max-width: 800px;
+      margin: 40px auto;
+      overflow: hidden;
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease;
+      touch-action: pan-y;
+    }
+    .slide {
+      position: relative; /* 제목을 이미지 위에 올리기 위해 추가 */
+      min-width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* 제목을 이미지 위에 크게 표시 */
+    .slide-title {
+      position: absolute;
+      top: 35%;  /* 이미지 상단에서 20px 떨어지도록 */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;  /* 글씨 크기를 크게 */
+      font-weight: bold;
+      color: #fff;
+      padding: 10px 20px; /* 제목과 이미지 사이에 여백 */
+      background: rgba(0, 0, 0, 0.5); /* 반투명 배경으로 가독성 향상 */
+      border-radius: 5px;
+    }
+    .slide-title2 {
+      position: absolute;
+      top: 30%;  /* 이미지 상단에서 20px 떨어지도록 */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;  /* 글씨 크기를 크게 */
+      font-weight: bold;
+      color: #fff;
+      padding: 10px 20px; /* 제목과 이미지 사이에 여백 */
+      background: rgba(0, 0, 0, 0.5); /* 반투명 배경으로 가독성 향상 */
+      border-radius: 5px;
+    }
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .nav-button2 {
+      position: absolute;
+      top: 40%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .prev {
+      left: 10px;
+    }
+    .next {
+      right: 10px;
+    }
+  </style>
+</head>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <!-- Effectiveness of ZegOT. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Quantitative Results of DDIS</h2>
+          <p class="large-text">
+            We compare the image quality with existing DFIS studies to evaluate whether the generated images approximate the distribution of the training set used to train the model.
+            For this evaluation, we use (1) Inception Score (IS) and Frechet Inception Distance (FID), and (2) Precision and Recall (P&R), to measure the fidelity and diversity of synthetic images strictly.
+          </p>
+          <img src="./ddis_quantitative_IFPR.png" vspace = 10 
+          class="figure1"
+          alt="figure1_image."/>
+        </div>
+      </div>
+      <!--/ Effectiveness of ZegOT. -->
+    </div>
+  </div>
+</section>
+
+<body>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">
+        Qualitative Results of DDIS
+      </h2>
+      <p class="large-text">
+        Qualitative comparison with various DFIS methods on the <strong><em>PACS (Art, Cartoon)</em></strong> and <strong><em>Style-Aligned</em></strong> dataset.
+        Since we do not know the knowledge of the dataset used for training the classifier, existing DFIS methods must explore an extremely large image search space. This leads to generated images with artifacts that fail to accurately capture the training dataset's domain properties.
+        DDIS leverages DAG in the diffusion sampling process and optimizes CAT embeddings to synthesize images that accurately reflect the training dataset's domain and class attributes, producing images that closely resemble the original data.
+      </p>
+      <!-- 첫 번째 슬라이더 (3 슬라이드: CFG, PAG, SEG) -->
+      <div class="slider" id="slider1">
+        <div class="slides" id="slides1">
+          <!-- Slide 1 -->
+          <div class="slide">
+            <img src="./ddis_pacs_art.png" alt="CFG">
+            <div class="slide-title2">Art</div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="slide">
+            <img src="./ddis_pacs_cartoon.png" alt="PAG">
+            <div class="slide-title2">Cartoon</div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="slide">
+            <img src="./ddis_pacs_stylealigned.png" alt="PAG">
+            <div class="slide-title2">Style-Aligned</div>
+          </div>
+          
+        </div>
+        <!-- 네비게이션 버튼 -->
+        <button class="nav-button2 prev" id="prevBtn1">&laquo;</button>
+        <button class="nav-button2 next" id="nextBtn1">&raquo;</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">
+        Applications of DDIS
+      </h2>
+      <p class="large-text">
+        DDIS aims to enhance the utility of a given model by generating samples that approximate the distribution of the training data.
+        Accordingly, we conduct experiments on <strong><em>Data-Free Knowledge Distillation (DFKD)</em></strong> and <strong><em>Data-Free Model Pruning</em></strong> using synthetic images without direct access to the training data.
+        Specifically, we synthesize 2,800 images from the PACS dataset and 100k images from ImageNet-1k for these experiments.
+      </p>
+      <!-- 첫 번째 슬라이더 (3 슬라이드: CFG, PAG, SEG) -->
+      <div class="slider" id="slider1">
+        <div class="slides" id="slides2">
+          <!-- Slide 1 -->
+          <div class="slide">
+            <img src="./ddis_quantitative_DFKD.png" alt="CFG">
+            <div class="slide-title">Data-Free <br>Knowledge Distillation</div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="slide">
+            <img src="./ddis_quantitative_Pruning.png" alt="PAG">
+            <div class="slide-title">Data-Free <br> Model Pruning</div>
+          </div>
+        </div>
+        <!-- 네비게이션 버튼 -->
+        <button class="nav-button prev" id="prevBtn2">&laquo;</button>
+        <button class="nav-button next" id="nextBtn2">&raquo;</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // 첫 번째 슬라이더 스크립트 (slider1)
+    (function() {
+      const slides = document.getElementById('slides1');
+      const slideElements = slides.querySelectorAll('.slide');
+      const slideCount = slideElements.length;
+      const prevBtn = document.getElementById('prevBtn1');
+      const nextBtn = document.getElementById('nextBtn1');
+      let currentIndex = 0;
+      let startX = 0;
+      let isDragging = false;
+
+      function showSlide(index) {
+        if (index < 0) {
+          currentIndex = slideCount - 1;
+        } else if (index >= slideCount) {
+          currentIndex = 0;
+        } else {
+          currentIndex = index;
+        }
+        slides.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+      }
+
+      prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+      nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
+
+      slides.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
+      slides.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+      });
+      slides.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        const diff = e.clientX - startX;
+        if (diff > 50) {
+          showSlide(currentIndex - 1);
+        } else if (diff < -50) {
+          showSlide(currentIndex + 1);
+        }
+        isDragging = false;
+      });
+      slides.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+      slides.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+      });
+    })();
+
+    // 두 번째 슬라이더 스크립트 (slider2)
+    (function() {
+      const slides = document.getElementById('slides2');
+      const slideElements = slides.querySelectorAll('.slide');
+      const slideCount = slideElements.length;
+      const prevBtn = document.getElementById('prevBtn2');
+      const nextBtn = document.getElementById('nextBtn2');
+      let currentIndex = 0;
+      let startX = 0;
+      let isDragging = false;
+
+      function showSlide(index) {
+        if (index < 0) {
+          currentIndex = slideCount - 1;
+        } else if (index >= slideCount) {
+          currentIndex = 0;
+        } else {
+          currentIndex = index;
+        }
+        slides.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+      }
+
+      prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+      nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
+
+      slides.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
+      slides.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+      });
+      slides.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        const diff = e.clientX - startX;
+        if (diff > 50) {
+          showSlide(currentIndex - 1);
+        } else if (diff < -50) {
+          showSlide(currentIndex + 1);
+        }
+        isDragging = false;
+      });
+      slides.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+      slides.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+      });
+    })();
+
+      // 두 번째 슬라이더 스크립트 (slider2)
+      (function() {
+        const slides = document.getElementById('slides3');
+        const slideElements = slides.querySelectorAll('.slide');
+        const slideCount = slideElements.length;
+        const prevBtn = document.getElementById('prevBtn3');
+        const nextBtn = document.getElementById('nextBtn3');
+        let currentIndex = 0;
+        let startX = 0;
+        let isDragging = false;
+  
+        function showSlide(index) {
+          if (index < 0) {
+            currentIndex = slideCount - 1;
+          } else if (index >= slideCount) {
+            currentIndex = 0;
+          } else {
+            currentIndex = index;
+          }
+          slides.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+        }
+  
+        prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
+  
+        slides.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          startX = e.clientX;
+        });
+        slides.addEventListener('touchstart', (e) => {
+          isDragging = true;
+          startX = e.touches[0].clientX;
+        });
+        slides.addEventListener('mouseup', (e) => {
+          if (!isDragging) return;
+          const diff = e.clientX - startX;
+          if (diff > 50) {
+            showSlide(currentIndex - 1);
+          } else if (diff < -50) {
+            showSlide(currentIndex + 1);
+          }
+          isDragging = false;
+        });
+        slides.addEventListener('touchend', () => {
+          isDragging = false;
+        });
+        slides.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          e.preventDefault();
+        });
+      })();
+  </script>
+
+  <!-- Citation Section -->
+  <!-- <section>
+    <footer>
+      <h2>Citation</h2>
+      <p>❤️ If you find our work useful in your research, please cite our work! :)</p>
+      <div class="citation"> -->
+<!-- <pre>@article{ahn2024selfrectifying,
+    title={Self-Rectifying Diffusion Sampling with Perturbed-Attention Guidance},
+    author={Donghoon Ahn and Hyoungwon Cho and Jaewon Min and Wooseok Jang and Jungwoo Kim and SeonHwa Kim and Hyun Hee Park and Kyong Hwan Jin and Seungryong Kim},
+    journal={arXiv preprint arXiv:2403.17377},
+    year={2024} -->
+<!-- }</pre> -->
+      <!-- </div> -->
+    <!-- </footer> -->
+  <!-- </section> -->
+
+<!-- <div style="text-align: center;">
+  <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fcubeyoung.github.io%2Fzegot.github.io%2F&count_bg=%233DC8C4&title_bg=%2320AA9F&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+</div> -->
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://github.com/cubeyoung" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
